@@ -1,9 +1,19 @@
 'use strict';
 
-function StorageException(message) {
-   this.message = message;
-   this.name = "StorageException";
-}
+const mongoose = require('mongoose');
+
+const stubsSchema = mongoose.Schema({
+  tag: {type: String, required: true, unique: true},
+  artists: [{
+    name: String,
+    id: String,
+    related: Array,
+    genres: Array,
+    tags: Array,
+  }],
+  songs: Array,
+  albums: Array,
+});
 
 const currentArtist = {
   name:'',
@@ -27,5 +37,5 @@ function createDbObj() {
   const storage = Object.create(db);
   return storage;
 }
-
-module.exports = {CurrentArtist: createCurrentArtistObj(), Db: createDbObj()};
+const model = mongoose.model('Stubs', stubsSchema);
+module.exports = {CurrentArtist: createCurrentArtistObj(), Stubs: model};
