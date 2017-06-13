@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const {CurrentArtist, Db} = require('./models');
 const {DATABASE_URL, PORT} = require('./config');
 const dotenv = require('dotenv').config();
+const base64 = require('base-64');
 
 const app = express();
 
@@ -21,10 +22,24 @@ app.get("/", (req, res)=>{
 });
 
 app.get("/search/:type/:query", (req, clientRespond)=>{
-  sReqBySearch(baseUrl, req.params.type, req.params.query, clientRespond);
+  getCredentials().then(res=> console.log(res));
+  // sReqBySearch(baseUrl, req.params.type, req.params.query, clientRespond);
 });
 
 const baseUrl = `https://api.spotify.com/v1/`;
+
+function getCredentials(){
+  return fetch('https://accounts.spotify.com/api/token',{
+    method: 'POST',
+    body: 'grant_type=client_credentials',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': `Basic ${base64.encode('f397ddf305dd4fb1a348e110c2d0f2ca:fd2e4d4c99494bdc9da125ea768078ba')}`
+    }
+  })
+  .then(uglyStream=> uglyStream.json())
+  .then(niceJson=> niceJson.access_token);
+}
 
 function bigImg(artist){
   let biggest = 0;
