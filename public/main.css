@@ -1,0 +1,232 @@
+*{
+  box-sizing: border-box;
+}
+
+body{
+  font-family: 'Lato', sans-serif;
+  font-size:16px;
+  color:white;
+}
+
+h1,h2,h3{
+  font-family: 'Varela Round', sans-serif;
+}
+
+h1{
+  font-size:35px;
+}
+
+h2{
+  font-size:25px;
+}
+
+h3{
+  font-size:35px;
+}
+
+header{
+  padding-left:20px;
+  padding-right:20px;
+  padding-top:10px;
+  padding-bottom:10px;
+  background-color:black;
+}
+
+.navbar{
+  color:white;
+  justify-content: space-between;
+  width:90%;
+  margin:auto;
+}
+
+#queryString{
+  font-family: 'Varela Round', sans-serif;
+  font-size:20px;
+  height:30px;
+  width:400px;
+  background-color:rgba(255,255,255,0.3);
+  border-style: none;
+  border-radius: 2%;
+  text-align: center;
+  color:white;
+}
+
+.burger{
+  background-color:white;
+  margin:3px;
+  width:30px;
+  height:5px;
+}
+
+.veggieBurger{
+  flex-direction: column;
+}
+
+.container{
+  display:flex;
+  flex-wrap: wrap;
+}
+
+main{
+  background-color:rgba(0,0,0,0.7);
+  height:100vh;
+  width:100vw;
+  justify-content: space-around;
+}
+
+.artistPhoto{
+  border-radius: 100%;
+  width:75px;
+  height:75px;
+  margin-bottom:10px;
+  box-shadow: 0px 5px 10px rgba(0,0,0,0.5);
+  display:block;
+}
+
+.artistPhoto.main{
+  width:100px;
+  height:100px;
+}
+
+.currentArtist{
+  margin-top:-10px;
+  background-color:black;
+  border-radius:0px 0px 10px 10px;
+  flex-grow:2;
+  max-width: 95%;
+  max-height:72%;
+  box-shadow: 0px 5px 10px rgba(0,0,0,0.5);
+  overflow: scroll;
+  padding:10px;
+}
+
+.artistBanner{
+  flex-direction:column;
+  align-items: center;
+  margin-bottom:10px;
+  padding:10px;
+  border-radius:10px 10px 0px 0px;
+  background-color:#FFE75B;
+  color:black;
+  flex-grow:2;
+  max-width:95%;
+}
+
+.body{
+  margin-top:10px;
+}
+
+.artistDescription , .relatedDescription{
+  max-height:100px;
+  width:90%;
+  overflow:scroll;
+  margin:auto;
+  margin-bottom:10px;
+}
+
+.hidden{
+  display:none;
+}
+
+.stub{
+  background-color:#FFE75B;
+  border-radius:0px 5px 5px 0px;
+  padding:5px;
+  margin-right:5px;
+  margin-bottom:5px;
+  color:black;
+}
+
+.stubStyle {
+  width: 0; 
+  height: 0; 
+  border-top: 13px solid transparent;
+  border-bottom: 13px solid transparent;
+  
+  border-right: 13px solid #FFE75B;
+}
+
+.dot{
+  background-color:black;
+  border-radius: 100%;
+  width:5px;
+  height:5px;
+  margin-left:5px;
+  margin-top:-2px;
+}
+
+.content{
+  margin-top:5px;
+  margin-bottom:5px;
+  width:90%;
+  margin:auto;
+}
+
+.contentBanner{
+  width:90%;
+  margin:auto;
+  margin-top:20px;
+  margin-bottom:5px;
+}
+
+
+.relatedArtist{
+  text-align: center;
+  justify-content: center;
+  flex-direction:row;
+  overflow: scroll;
+  font-size: 21px;
+  margin-bottom:10px;
+  padding:10px;
+  border-radius:5px 5px 5px 5px;
+  background-color:#FFE75B;
+  color:black;
+  width:30%;
+  height:125px;
+}
+
+.relatedName{
+  display:block;
+  margin:auto;
+}
+
+.related{
+  justify-content: space-around;
+}
+
+.item.one{
+  max-width:50%;
+  max-height:90vh;
+  flex-grow:2;
+}
+
+.item.two{
+  max-width:32%;
+  max-height:90vh;
+  flex-grow:1;
+}
+
+.item.three{
+  max-width:18%;
+  max-height:90vh;
+  flex-grow:1;
+}
+
+iframe{
+  width:95%;
+  height:100%;
+  border-radius:10px;
+  box-shadow: 0px 5px 10px rgba(0,0,0,0.5);
+  overflow:hide;
+  margin:auto;
+}
+
+.myArtists{
+  padding:10px;
+  background-color:black;
+  flex-grow:1;
+  border-radius:10px;
+  box-shadow: 0px 5px 10px rgba(0,0,0,0.5);
+  width:95%;
+  height:100%;
+}

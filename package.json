@@ -1,0 +1,25 @@
+{
+  "name": "spotifye",
+  "version": "1.0.0",
+  "description": "an app that could make spotify better",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "dotenv": "^4.0.0",
+    "express": "^4.15.3",
+    "mongoose": "^4.10.6",
+    "morgan": "^1.8.2",
+    "node-fetch": "^1.7.0"
+  },
+  "devDependencies": {
+    "chai": "^4.0.2",
+    "mocha": "^3.4.2",
+    "nodemon": "^1.11.0"
+  }
+}
