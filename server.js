@@ -22,35 +22,30 @@ app.get('/', (req, res)=>{
   res.sendFile(__dirname + '/public/index.html');
 });
 
-// app.post('/tags/evaluate', (req, res)=>{
-//   const tag = req.body.tag;
-//   const type = req.body.type;
-//   const data = JSON.stringify(req.body.data);
-//   const url1 = `http://localhost:8080/tags/${type}`;
-//   const url2 = `http://localhost:8080/tags/${type}/${tag}`;
-//   Stubs
-//     .find({tag})
-//     .count()
-//     .then(count => {
-//       if(count > 0){
-//         return fetch(url1, {method: 'PUT', body: data, 'content-type': 'application/json'});
-//       }else {
-//         return fetch(url2, {method: 'POST', body: data, 'content-type': 'application/json'})
-//         .then(_res => console.log(_res)).catch(err => console.error(err));
-//       }
-//     });
-// });
-
 app.put('/tags/:type/:tag', (req, res)=>{
+
+  const tag = req.params.tag;
+
   Stubs
-    .find({tag: req.params.tag})
+    .find({tag: tag})
     .count()
     .then(count => {
       if(count > 0){
-        console.log('oops that already exists');
-      }else {
+        console.log('Updating Existing Tag');
         if(req.params.type === 'artist'){
-          console.log('########passing.');
+          Stubs
+            .updateOne({tag: tag},{
+              $push: {artists: req.body.artist}
+            })
+            .then(_res=> {res.json(_res)})
+            .catch(err=> {
+              console.error(err);
+              res.sendStatus(500);
+            });
+        }
+      }else {
+        console.log('Creating New Tag');
+        if(req.params.type === 'artist'){
           Stubs
             .create({
               tag: req.params.tag,
@@ -59,7 +54,6 @@ app.put('/tags/:type/:tag', (req, res)=>{
                 id: req.body.artist.id,
                 related: req.body.artist.related,
                 genres: req.body.artist.genres,
-                tags: req.body.artist.tags
               }],
               songs: [],
               albums: [],
