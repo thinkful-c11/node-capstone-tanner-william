@@ -12,7 +12,7 @@ describe('It should start', function(){
 
  it('when numbers equal 2', function(){
     const two = 1+1;
-    two.should.equal(2);
+    two.should.equal(1+1);
   });
 
 });
