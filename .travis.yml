@@ -1,3 +1,10 @@
 language: node_js
 node_js: node
-services: "-mongodb"
+services: -mongodb
+deploy:
+  provider: heroku
+  api_key:
+    secure: SiQ3f8LbPD4FVQUL9s6M4Q995J/jOLC6kvrdiIJY1Udxwlnxzgkihis89BXm97kjQ8m/I4fdqG4oy3Q2QYnVjR0dB1OrNkFO2zKNhHsVKCvE6ZVcm1zZ4ZxPpOX6TcqU1zdmP+v9fGKm1sujJGx4wrEVOMlLSjApayTgyUiEZc5u3EZUNBA6bO9DNT3gg/j2yYhLOur6qsVfSCi4e2ab83c1UD2NIA6WK/2VIH3BUnPInztb87S0nk0s3C0Xl8tcfWifDU6k30aFU11Ozu/JO5gksNIS9x1E59WnfjhXGWkOaNuYGJeQSz66elZlqSzGPwnsdLgIBelgsA0tGp0wXwja9KKvaEP3KfVpunGWqqmONwEuhvJvpnM3jD8NTpECftK0jk8VwRLH/vreByX7U99jrSWCzUD4z418RR/eKDzTWZXeQLImbC13jaf3PotQO04K6ZvJLRD/wjcjXjkm3/+6kPQf+WOs36b1yucCVnunI7NL51JK7RrEFI9TK5cpo92WkMlwQ1qXTOvM6phc1E+2tJ8Z6sWw/v/8JBmDYwn6Xkey800HyEqAfN9FfnEkHhGWq100rVKb/SYuV9a4egZmZ7h7Zk58Ti+P/h6mNqI5tbdVVWfg7zH4cT3M40XanYa7p+5aPEZhq4Ds4tvprcyyIutBu30C4BvwjXnEeQY=
+  app: node-capstone-tanner-william
+  on:
+    repo: thinkful-c11/node-capstone-tanner-william
