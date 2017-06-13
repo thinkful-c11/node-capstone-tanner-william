@@ -22,8 +22,9 @@ app.get("/", (req, res)=>{
 });
 
 app.get("/search/:type/:query", (req, clientRespond)=>{
-  getCredentials().then(res=> console.log(res));
-  // sReqBySearch(baseUrl, req.params.type, req.params.query, clientRespond);
+  getCredentials().then(credentials=> {
+    sReqBySearch(baseUrl, req.params.type, req.params.query, clientRespond, credentials);
+  });
 });
 
 const baseUrl = `https://api.spotify.com/v1/`;
@@ -55,22 +56,22 @@ function bigImg(artist){
   return bigIndex;
 }
 
-function sReqRelated (id){
+function sReqRelated (id, credentials){
   let relatedUrl = `${baseUrl}artists/${id}/related-artists`;
   return fetch(relatedUrl, {
     method: 'get',
     headers: {
-      authorization: 'Bearer BQBGON2piG9zz14uRZGDSR6uYw0oZlY77PJ1ITt7FCCWfckpqhFFjtWl3Nypza181_0ItnE7xKH7yizYVI7xgw'
+      authorization: `Bearer ${credentials}`
     }});
 }
 
-function sReqBySearch(baseUrl,type,query,clientRespond){
+function sReqBySearch(baseUrl,type,query,clientRespond, credentials){
   const searchUrl = `${baseUrl}search?type=${type}&q=${query}`;
 
   return fetch(searchUrl,{
     method: 'get',
     headers: {
-      authorization: 'Bearer BQBGON2piG9zz14uRZGDSR6uYw0oZlY77PJ1ITt7FCCWfckpqhFFjtWl3Nypza181_0ItnE7xKH7yizYVI7xgw'
+      authorization: `Bearer ${credentials}`
     }
   })
   // .header('authorization','Bearer BQBCLP5TS6G33wjIn60CXZlMJNCj_BGDFyzFEFLrcZILGRbqhMb64oxXU9fO1ZCWkg21DjuIdDKj8sEzFf5t4Q')
@@ -89,7 +90,7 @@ function sReqBySearch(baseUrl,type,query,clientRespond){
     CurrentArtist.genres = responseArtist.genres;
     CurrentArtist.related = [];
 
-    return sReqRelated(CurrentArtist.id);
+    return sReqRelated(CurrentArtist.id, credentials);
   })
   .then(res=>{
     return res.json();
