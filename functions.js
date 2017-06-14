@@ -91,4 +91,52 @@ function sReqBySearch(baseUrl,type,query,clientRespond, credentials){
   .catch(err => console.error(err.message));
 }
 
-module.exports = {getCredentials, bigImg, sReqRelated, sReqBySearch, evaluateTag};
+function sReqForAlbumsByArtist(artistId, credentials){
+  const searchUrl = `${baseUrl}artists/${artistId}/albums`;
+  return fetch(searchUrl,{
+    method: 'get',
+    headers: {
+      authorization: `Bearer ${credentials}`
+    }
+  })
+  .then(_res => {
+    return _res.json();
+  })
+  .then(_res => _res)
+  .catch(err => console.error(err));
+}
+
+function sReqForAlbumBySearch(query, credentials){
+  const searchUrl = `${baseUrl}search?type=album&q=${query}`;
+
+  return fetch(searchUrl,{
+    method: 'get',
+    headers: {
+      authorization: `Bearer ${credentials}`
+    }
+  })
+  .then(_res => {
+    return _res.json();
+  })
+  .then(_res => _res)
+  .catch(err => console.error(err));
+}
+
+function sReqForAlbumById(albumId, credentials){
+  const searchUrl = `${baseUrl}albums/${albumId}`;
+
+  return fetch(searchUrl,{
+    method: 'get',
+    headers: {
+      authorization: `Bearer ${credentials}`
+    }
+  })
+  .then(_res => {
+    return _res.json();
+  })
+  .then(_res => _res)
+  .catch(err => console.error(err));
+}
+
+
+module.exports = {getCredentials, bigImg, sReqRelated, sReqBySearch, evaluateTag, sReqForAlbumsByArtist, sReqForAlbumBySearch, sReqForAlbumById};

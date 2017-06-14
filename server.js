@@ -9,7 +9,7 @@ const {Stubs, Tags, Artists, Songs, Albums} = require('./models');
 const {DATABASE_URL, PORT} = require('./config');
 const dotenv = require('dotenv').config();
 const base64 = require('base-64');
-const {getCredentials, bigImg, sReqRelated, sReqBySearch, evaluateTag} = require('./functions');
+const {getCredentials, bigImg, sReqRelated, sReqBySearch, evaluateTag, sReqForAlbumsByArtist, sReqForAlbumBySearch, sReqForAlbumById} = require('./functions');
 
 const app = express();
 
@@ -44,6 +44,18 @@ app.get('/', (req, res)=>{
 //       }
 //     });
 // });
+
+///TEST ENDPOINT FOR FUNCTION WRITING///
+app.get('/testing/:albumId', (req,res)=>{
+  getCredentials()
+  .then(credentials=>{
+    return sReqForAlbumById(req.params.albumId, credentials);
+  })
+  .then(_res =>{
+    res.status(200).json(_res);
+  })
+  .catch(err=> console.error(err));
+});
 
 //Create or update Artist / Tag
 app.put('/tags/artists', (req, res)=>{
