@@ -24,22 +24,24 @@ const tagSchema = mongoose.Schema({
 
 const artistsSchema = mongoose.Schema({
   artist: {type: String, required: true, unique: true},
+  artistId: String,
   tags: [String]
 });
 
 const songsSchema = mongoose.Schema({
-  song: {
-    artist: String,
-    album: String,
-    title: String
-  },
-  tags: [{tag: {type: String}}]
+  artist: String,
+  album: String,
+  title: String,
+  albumId: String,
+  songId: String,
+  tags: [String]
 });
 
 const albumsSchema = mongoose.Schema({
   artist: String,
   title: String,
-  tags: [{tag: String}]
+  albumId: String,
+  tags: [String]
 });
 
 const currentArtist = {

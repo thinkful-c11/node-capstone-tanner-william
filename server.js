@@ -9,7 +9,7 @@ const {Stubs, Tags, Artists, Songs, Albums} = require('./models');
 const {DATABASE_URL, PORT} = require('./config');
 const dotenv = require('dotenv').config();
 const base64 = require('base-64');
-const {getCredentials, bigImg, sReqRelated, sReqBySearch} = require('./functions');
+const {getCredentials, bigImg, sReqRelated, sReqBySearch, evaluateTag} = require('./functions');
 
 const app = express();
 
@@ -30,13 +30,12 @@ app.put('/tags', (req, res)=>{
     .then(num => {
       if(num > 0){
         console.log('That tag already exists.');
-        res.status(302).send('That tag already exists!');
       }else{
         Tags
           .create({tag: tag})
           .then(_res => {
-            console.log('Item successfully created.')
-            res.status(201).send(_res);
+            console.log('Item successfully created.');
+            console.log(_res);
           });
       }
     });
@@ -44,42 +43,50 @@ app.put('/tags', (req, res)=>{
 
 app.put('/tags/artists', (req, res)=>{
   const artist = req.body.artist;
+  const artistId = req.body.artistId;
   const tag = req.body.tags;
+  let tagId;
   Artists
     .find({artist: artist})
     .count()
     .then(count => {
       if(count > 0){
         Artists
-          .update({artist}, {$push: {tags: tag}})
+          .update({artist}, {$addToSet: {tags: tag}})
           .then(_res => res.status(202).send(_res))
           .catch(err => res.status(500).send(`No need to panic! Except maybe. Here's what went wrong, you tell me: ${err}`));
       }else{
-        Artists
-          .create({artist: artist, tags: tag})
+        evaluateTag(tag, tagId, Tags).then((_tagId)=> {
+          tagId = _tagId;
+          console.log(tagId);
+          Artists
+          .create({artist: artist, artistId: artistId, tags: tagId})
           .then(_res => {
             res.status(201).send(_res);
           });
+        }
+        );
       }
     });
 });
 
 app.put('/tags/albums', (req, res)=>{
-  const title = req.body.title;
+  const albumId = req.body.albumId;
+  const albumTitle = req.body.albumTitle;
   const tag = req.body.tags;
   const artist = req.body.artist;
   Albums
-    .find({title: title})
+    .find({title: albumTitle})
     .count()
     .then(count => {
       if(count > 0){
         Albums
-          .update({title: title}, {$addToSet: {"tags": tag}})
+          .update({title: albumTitle}, {$addToSet: {tags: tag}})
           .then(_res => res.status(202).send(_res))
           .catch(err => res.status(500).send(`No need to panic! Except maybe. Here's what went wrong, you tell me: ${err}`));
       }else{
         Albums
-          .create({title: title, artist: artist, tags: tag})
+          .create({title: albumTitle, artist: artist, tags: tag, albumId: albumId})
           .then(_res => {
             res.status(201).send(_res);
           }).catch(err => console.error(err));
@@ -87,10 +94,35 @@ app.put('/tags/albums', (req, res)=>{
     });
 });
 
+app.put('/tags/songs', (req, res)=>{
+  const songTitle = req.body.songTitle;
+  const albumTitle = req.body.albumTitle;
+  const albumId = req.body.albumId;
+  const songId = req.body.songId;
+  const tag = req.body.tags;
+  const artist = req.body.artist;
+  Songs
+    .find({title: songTitle})
+    .count()
+    .then(count => {
+      if(count > 0){
+        Songs
+          .update({title: songTitle}, {$addToSet: {tags: tag}})
+          .then(_res => res.status(202).send(_res))
+          .catch(err => res.status(500).send(`No need to panic! Except maybe. Here's what went wrong, you tell me: ${err}`));
+      }else{
+        Songs
+          .create({title: songTitle, artist: artist, tags: tag, albumTitle: albumTitle, albumId: albumId, songId: songId})
+          .then(_res => {
+            res.status(201).send(_res);
+          }).catch(err => console.error(err));
+      }
+    });
+});
+
+
 app.put('/tags/:type/:tag', (req, res)=>{
-
   const tag = req.params.tags;
-
   Stubs
     .find({tag: tag})
     .count()
@@ -102,7 +134,7 @@ app.put('/tags/:type/:tag', (req, res)=>{
             .updateOne({tag: tag},{
               $push: {artists: req.body.artist}
             })
-            .then(_res=> {res.json(_res)})
+            .then(_res=> {res.json(_res);})
             .catch(err=> {
               console.error(err);
               res.sendStatus(500);

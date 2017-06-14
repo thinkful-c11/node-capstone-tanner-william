@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 const {CurrentArtist} = require('./models');
 const base64 = require('base-64');
 
-const baseUrl = `https://api.spotify.com/v1/`;
+const baseUrl = 'https://api.spotify.com/v1/';
 
 function getCredentials(){
   return fetch('https://accounts.spotify.com/api/token',{
@@ -16,6 +16,27 @@ function getCredentials(){
   })
   .then(uglyStream=> uglyStream.json())
   .then(niceJson=> niceJson.access_token);
+}
+
+function evaluateTag(tag, tagId, DB){
+  return DB
+    .find({tag: tag})
+    .count()
+    .then(num => {
+      if(num > 0){
+        console.log('That tag already exists.');
+      }else{
+        DB
+            .create({tag: tag})
+            // .then(_res => {
+            //   console.log(_res);
+            //   console.log('Item successfully created.');
+            //   // console.log(tagId);
+            //   return _res._id;
+            // })
+            .then(res=> res._id);
+      }
+    });
 }
 
 function bigImg(artist){
@@ -87,4 +108,4 @@ function sReqBySearch(baseUrl,type,query,clientRespond, credentials){
   .catch(err => console.error(err.message));
 }
 
-module.exports = {getCredentials, bigImg, sReqRelated, sReqBySearch};
+module.exports = {getCredentials, bigImg, sReqRelated, sReqBySearch, evaluateTag};
