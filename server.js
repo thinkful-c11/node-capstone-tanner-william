@@ -56,7 +56,7 @@ app.put('/tags/artists', (req, res)=>{
           .then(_res => res.status(202).send(_res))
           .catch(err => res.status(500).send(`No need to panic! Except maybe. Here's what went wrong, you tell me: ${err}`));
       }else{
-        evaluateTag(tag, tagId, Tags).then((_tagId)=> {
+        evaluateTag(tag, Tags).then((_tagId)=> {
           tagId = _tagId;
           console.log(tagId);
           Artists

@@ -16,6 +16,7 @@
     "express": "^4.15.3",
     "faker": "^4.1.0",
     "mongoose": "^4.10.6",
+    "mongoose-findorcreate": "^2.0.0",
     "morgan": "^1.8.2",
     "node-fetch": "^1.7.0"
   },

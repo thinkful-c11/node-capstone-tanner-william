@@ -18,24 +18,15 @@ function getCredentials(){
   .then(niceJson=> niceJson.access_token);
 }
 
-function evaluateTag(tag, tagId, DB){
+function evaluateTag(tag, DB){
   return DB
     .find({tag: tag})
     .count()
     .then(num => {
-      if(num > 0){
-        console.log('That tag already exists.');
-      }else{
-        DB
-            .create({tag: tag})
-            // .then(_res => {
-            //   console.log(_res);
-            //   console.log('Item successfully created.');
-            //   // console.log(tagId);
-            //   return _res._id;
-            // })
-            .then(res=> res._id);
-      }
+      return DB.findOrCreate({tag: tag});
+    }).then(res=> {
+      console.log(res);
+      return res.doc._id;
     });
 }
 

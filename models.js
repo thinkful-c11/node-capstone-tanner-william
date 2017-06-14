@@ -1,6 +1,8 @@
 'use strict';
 
 const mongoose = require('mongoose');
+const findOrCreate = require('mongoose-findorcreate');
+
 
 const stubsSchema = mongoose.Schema({
   tag: {type: String, required: true, unique: true},
@@ -21,6 +23,8 @@ const stubsSchema = mongoose.Schema({
 const tagSchema = mongoose.Schema({
   tag: {type: String}
 });
+
+tagSchema.plugin(findOrCreate);
 
 const artistsSchema = mongoose.Schema({
   artist: {type: String, required: true, unique: true},
