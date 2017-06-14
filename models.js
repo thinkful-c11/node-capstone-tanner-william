@@ -17,6 +17,7 @@ const stubsSchema = mongoose.Schema({
 
 
 // db.artists.find("tags": "5bafbab45215212");
+
 const tagSchema = mongoose.Schema({
   tag: {type: String}
 });
