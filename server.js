@@ -9,7 +9,7 @@ const {Stubs, Tags, Artists, Songs, Albums} = require('./models');
 const {DATABASE_URL, PORT} = require('./config');
 const dotenv = require('dotenv').config();
 const base64 = require('base-64');
-const {getCredentials, bigImg, sReqRelated, sReqBySearch, evaluateTag, sReqForAlbumsByArtist, sReqForAlbumBySearch, sReqForAlbumById} = require('./functions');
+const {getCredentials, bigImg, sReqRelated, sReqBySearch, evaluateTag, sReqForAlbumsByArtist, sReqForAlbumBySearch, sReqForAlbumById,sReqByArtistForTopTracks, sReqByAlbumForSongs, sReqBySongIdForSong, sReqBySongTitleForSongs} = require('./functions');
 
 const app = express();
 
@@ -159,7 +159,7 @@ app.put('/tags/songs', (req, res)=>{
     });
 });
 
-//Main search function
+Main search function
 app.get('/search/:type/:query', (req, clientRespond)=>{
   getCredentials().then(credentials=> {
     sReqBySearch(baseUrl, req.params.type, req.params.query, clientRespond, credentials);
@@ -200,6 +200,35 @@ app.get('/tags/:tagId',(req,res)=>{
     .findById(req.params.tagId)
     .then(_res=> res.status(200).json(_res));
 });
+
+//Tanner Test Endpoints (probably don't need these)
+// app.get('/toptracks/:artistId', (req, res)=>{
+//   getCredentials().then(credentials => {
+//     return sReqByArtistForTopTracks(req.params.artistId, credentials)
+//     .then(_res => res.status(200).send(_res));
+//   });
+// });
+
+// app.get('/toptracks/albums/:albumId', (req, res)=>{
+//   getCredentials().then(credentials => {
+//     return sReqByAlbumForSongs(req.params.albumId, credentials)
+//     .then(_res => res.status(200).send(_res));
+//   });
+// });
+
+// app.get('/songs/:songId', (req, res)=>{
+//   getCredentials().then(credentials => {
+//     return sReqBySongIdForSong(req.params.songId, credentials)
+//     .then(_res => res.status(200).send(_res));
+//   });
+// });
+
+// app.get('/search/:songId', (req, res)=>{
+//   getCredentials().then(credentials => {
+//     return sReqBySongTitleForSongs(req.params.songId, credentials)
+//     .then(_res => res.status(200).send(_res));
+//   });
+// });
 
 app.listen(process.env.PORT || 8888, () => {
   console.log(`Your app is listening on port ${process.env.PORT || 8080}`);
