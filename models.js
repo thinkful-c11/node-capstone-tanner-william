@@ -15,9 +15,15 @@ const stubsSchema = mongoose.Schema({
   albums: Array,
 });
 
+
+// db.artists.find("tags": "5bafbab45215212");
+const tagSchema = mongoose.Schema({
+  tag: {type: String}
+});
+
 const artistsSchema = mongoose.Schema({
   artist: {type: String, required: true, unique: true},
-  tags: Array
+  tags: [String]
 });
 
 const songsSchema = mongoose.Schema({
@@ -26,15 +32,13 @@ const songsSchema = mongoose.Schema({
     album: String,
     title: String
   },
-  tags: Array
+  tags: [{tag: {type: String}}]
 });
 
 const albumsSchema = mongoose.Schema({
-  album: {
-    artist: String,
-    title: String,
-  },
-  tags: Array
+  artist: String,
+  title: String,
+  tags: [{tag: String}]
 });
 
 const currentArtist = {
@@ -60,8 +64,9 @@ function createDbObj() {
   return storage;
 }
 const stubsModel = mongoose.model('Stubs', stubsSchema);
-const artistModel = mongoose.model('Artists', artistsSchema);
-const songModel = mongoose.model('Songs', songsSchema);
-const albumModel = mongoose.model('Albums', albumsSchema);
+const artistsModel = mongoose.model('Artists', artistsSchema);
+const songsModel = mongoose.model('Songs', songsSchema);
+const albumsModel = mongoose.model('Albums', albumsSchema);
+const tagsModel = mongoose.model('Tags', tagSchema);
 
-module.exports = {CurrentArtist: createCurrentArtistObj(), Stubs: stubsModel, Artists: artistsSchema, Songs: songsSchema, Albums: albumsSchema};
+module.exports = {CurrentArtist: createCurrentArtistObj(), Stubs: stubsModel, Artists: artistsModel, Songs: songsModel, Albums: albumsModel, Tags: tagsModel};

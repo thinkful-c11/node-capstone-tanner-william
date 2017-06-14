@@ -5,7 +5,7 @@ const bodyParser = require('body-parser').json();
 const fetch = require('node-fetch');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
-const {Stubs, CurrentArtist} = require('./models');
+const {Stubs, Tags, Artists, Songs, Albums} = require('./models');
 const {DATABASE_URL, PORT} = require('./config');
 const dotenv = require('dotenv').config();
 const base64 = require('base-64');
@@ -22,9 +22,74 @@ app.get('/', (req, res)=>{
   res.sendFile(__dirname + '/public/index.html');
 });
 
+app.put('/tags', (req, res)=>{
+  const tag = req.body.tag;
+  Tags
+    .find({tag: tag})
+    .count()
+    .then(num => {
+      if(num > 0){
+        console.log('That tag already exists.');
+        res.status(302).send('That tag already exists!');
+      }else{
+        Tags
+          .create({tag: tag})
+          .then(_res => {
+            console.log('Item successfully created.')
+            res.status(201).send(_res);
+          });
+      }
+    });
+});
+
+app.put('/tags/artists', (req, res)=>{
+  const artist = req.body.artist;
+  const tag = req.body.tags;
+  Artists
+    .find({artist: artist})
+    .count()
+    .then(count => {
+      if(count > 0){
+        Artists
+          .update({artist}, {$push: {tags: tag}})
+          .then(_res => res.status(202).send(_res))
+          .catch(err => res.status(500).send(`No need to panic! Except maybe. Here's what went wrong, you tell me: ${err}`));
+      }else{
+        Artists
+          .create({artist: artist, tags: tag})
+          .then(_res => {
+            res.status(201).send(_res);
+          });
+      }
+    });
+});
+
+app.put('/tags/albums', (req, res)=>{
+  const title = req.body.title;
+  const tag = req.body.tags;
+  const artist = req.body.artist;
+  Albums
+    .find({title: title})
+    .count()
+    .then(count => {
+      if(count > 0){
+        Albums
+          .update({title: title}, {$addToSet: {"tags": tag}})
+          .then(_res => res.status(202).send(_res))
+          .catch(err => res.status(500).send(`No need to panic! Except maybe. Here's what went wrong, you tell me: ${err}`));
+      }else{
+        Albums
+          .create({title: title, artist: artist, tags: tag})
+          .then(_res => {
+            res.status(201).send(_res);
+          }).catch(err => console.error(err));
+      }
+    });
+});
+
 app.put('/tags/:type/:tag', (req, res)=>{
 
-  const tag = req.params.tag;
+  const tag = req.params.tags;
 
   Stubs
     .find({tag: tag})
