@@ -91,4 +91,44 @@ function sReqBySearch(baseUrl,type,query,clientRespond, credentials){
   .catch(err => console.error(err.message));
 }
 
-module.exports = {getCredentials, bigImg, sReqRelated, sReqBySearch, evaluateTag};
+const sReqByArtistForTopTracks = (id, credentials)=>{
+  let topTracksUrl = `${baseUrl}artists/${id}/top-tracks?country=US`;
+  return fetch(topTracksUrl, {
+    method: 'get',
+    headers: {
+      authorization: `Bearer ${credentials}`
+    }}).then(_res => _res.json()).then(res => res)
+    .catch(err => console.error(err));
+};
+
+const sReqByAlbumForSongs = (albumId, credentials) => {
+  let albumTracksUrl = `${baseUrl}albums/${albumId}/tracks`;
+  return fetch(albumTracksUrl, {
+    method: 'get',
+    headers: {
+      authorization: `Bearer ${credentials}`
+    }}).then(_res => _res.json()).then(res => res)
+    .catch(err => console.error(err));
+};
+
+const sReqBySongIdForSong = (songId, credentials) => {
+  let songUrl = `${baseUrl}tracks/${songId}`;
+  return fetch(songUrl, {
+    method: 'get',
+    headers: {
+      authorization: `Bearer ${credentials}`
+    }}).then(_res => _res.json()).then(res => res)
+    .catch(err => console.error(err));
+};
+
+const sReqBySongTitleForSongs = (songTitle, credentials)=>{
+  const queryUrl = `${baseUrl}search?type=track&q=track:${songTitle}`;
+  return fetch(queryUrl, {
+    method: 'get',
+    headers: {
+      authorization: `Bearer ${credentials}`
+    }}).then(_res => _res.json()).then(res => res)
+    .catch(err => console.error(err));
+};
+
+module.exports = {getCredentials, bigImg, sReqRelated, sReqBySearch, evaluateTag, sReqByArtistForTopTracks, sReqByAlbumForSongs, sReqBySongIdForSong, sReqBySongTitleForSongs};

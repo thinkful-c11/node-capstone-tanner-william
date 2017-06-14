@@ -2,6 +2,8 @@ const appState = {
   currentArtist:{},
 };
 
+console.log(appState);
+
 /// Search Function - should work regardless of search type... hopefully. ////////
 function submitSearch(type, query){
   fetch(`./search/${type}/${query}`)
