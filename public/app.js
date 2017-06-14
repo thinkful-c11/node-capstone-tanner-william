@@ -14,8 +14,7 @@ function submitSearch(type, query){
     });
   })
   .then(()=>{
-    render()
-    console.log(appState.currentArtist);
+    render();
   });
 }
 

@@ -19,15 +19,10 @@ function getCredentials(){
 }
 
 function evaluateTag(tag, DB){
-  return DB
-    .find({tag: tag})
-    .count()
-    .then(num => {
-      return DB.findOrCreate({tag: tag});
-    }).then(res=> {
-      console.log(res);
-      return res.doc._id;
-    });
+  return DB.findOrCreate({tag: tag})
+  .then(res=> {
+    return res;
+  });
 }
 
 function bigImg(artist){
@@ -62,15 +57,12 @@ function sReqBySearch(baseUrl,type,query,clientRespond, credentials){
       authorization: `Bearer ${credentials}`
     }
   })
-  // .header('authorization','Bearer BQBCLP5TS6G33wjIn60CXZlMJNCj_BGDFyzFEFLrcZILGRbqhMb64oxXU9fO1ZCWkg21DjuIdDKj8sEzFf5t4Q')
   .then(response => {
+    //This just makes an ugly stream into an object
     return response.json();
   })
   .then(res=>{
     let responseArtist = res.artists.items[0];
-
-    // console.log(responseArtist);
-
     CurrentArtist.name = responseArtist.name;
     CurrentArtist.id = responseArtist.id;
     CurrentArtist.imageUrl = responseArtist.images[bigImg(responseArtist)].url;
