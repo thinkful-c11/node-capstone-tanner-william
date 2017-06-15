@@ -50,7 +50,7 @@ const sUserSearchForArtist = (userQuery, res)=>{
         };
         artistObj.topTracks.push(currentTrack);
       });
-      res.json(artistObj);
+      return res.json(artistObj);
     });
   });
 };
