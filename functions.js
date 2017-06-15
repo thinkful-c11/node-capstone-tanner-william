@@ -45,7 +45,10 @@ function sReqRelated (id, credentials){
     method: 'get',
     headers: {
       authorization: `Bearer ${credentials}`
-    }});
+    }})
+    .then(res => res.json())
+    .then(json => json)
+    .catch(err => console.error(err));
 }
 
 const sReqForArtistBySearch = (userQuery, credentials)=>{
@@ -104,7 +107,7 @@ function sReqBySearch(baseUrl,type,query,clientRespond, credentials){
 }
 
 function sReqForAlbumsByArtist(artistId, credentials){
-  const searchUrl = `${baseUrl}artists/${artistId}/albums`;
+  const searchUrl = `${baseUrl}artists/${artistId}/albums?market=US`;
   return fetch(searchUrl,{
     method: 'get',
     headers: {
