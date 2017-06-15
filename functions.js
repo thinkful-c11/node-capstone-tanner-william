@@ -178,4 +178,4 @@ const sReqBySongTitleForSongs = (songTitle, credentials)=>{
     .catch(err => console.error(err));
 };
 
-module.exports = {getCredentials, bigImg, sReqRelated, sReqBySearch, evaluateTag, sReqByArtistForTopTracks, sReqByAlbumForSongs, sReqBySongIdForSong, sReqBySongTitleForSongs, , sReqForAlbumsByArtist, sReqForAlbumBySearch, sReqForAlbumById};
+module.exports = {getCredentials, bigImg, sReqRelated, sReqBySearch, evaluateTag, sReqByArtistForTopTracks, sReqByAlbumForSongs, sReqBySongIdForSong, sReqBySongTitleForSongs, sReqForAlbumsByArtist, sReqForAlbumBySearch, sReqForAlbumById};

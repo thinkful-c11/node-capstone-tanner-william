@@ -25,38 +25,6 @@ app.get('/', (req, res)=>{
   res.sendFile(__dirname + '/public/index.html');
 });
 
-//Create or update a tag - Probably don't need it.
-// app.put('/tags', (req, res)=>{
-//   const tag = req.body.tag;
-//   Tags
-//     .find({tag: tag})
-//     .count()
-//     .then(num => {
-//       if(num > 0){
-//         console.log('That tag already exists.');
-//       }else{
-//         Tags
-//           .create({tag: tag})
-//           .then(_res => {
-//             console.log('Item successfully created.');
-//             console.log(_res);
-//           });
-//       }
-//     });
-// });
-
-///TEST ENDPOINT FOR FUNCTION WRITING///
-app.get('/testing/:albumId', (req,res)=>{
-  getCredentials()
-  .then(credentials=>{
-    return sReqForAlbumById(req.params.albumId, credentials);
-  })
-  .then(_res =>{
-    res.status(200).json(_res);
-  })
-  .catch(err=> console.error(err));
-});
-
 //Create or update Artist / Tag
 app.put('/tags/artists', (req, res)=>{
   const artist = req.body.artist;
@@ -159,7 +127,7 @@ app.put('/tags/songs', (req, res)=>{
     });
 });
 
-Main search function
+// Main search function
 app.get('/search/:type/:query', (req, clientRespond)=>{
   getCredentials().then(credentials=> {
     sReqBySearch(baseUrl, req.params.type, req.params.query, clientRespond, credentials);
@@ -228,6 +196,26 @@ app.get('/tags/:tagId',(req,res)=>{
 //     return sReqBySongTitleForSongs(req.params.songId, credentials)
 //     .then(_res => res.status(200).send(_res));
 //   });
+// });
+
+//Create or update a tag - Probably don't need it.
+// app.put('/tags', (req, res)=>{
+//   const tag = req.body.tag;
+//   Tags
+//     .find({tag: tag})
+//     .count()
+//     .then(num => {
+//       if(num > 0){
+//         console.log('That tag already exists.');
+//       }else{
+//         Tags
+//           .create({tag: tag})
+//           .then(_res => {
+//             console.log('Item successfully created.');
+//             console.log(_res);
+//           });
+//       }
+//     });
 // });
 
 app.listen(process.env.PORT || 8888, () => {
