@@ -15,7 +15,7 @@ const sUserSearchForArtist = (userQuery)=>{
       artistObj = {
         name: artist.name,
         id: artist.id,
-        imageUrl: artist.images[bigImg(artist)],
+        imageUrl: artist.images[bigImg(artist.images)],
         genres: artist.genres,
         albums: [],
         topTracks: [],
@@ -34,7 +34,7 @@ const sUserSearchForArtist = (userQuery)=>{
         let currentAlbum = {
           title: album.name,
           id: album.id,
-          imageUrl: album.images[bigImg(album)],
+          imageUrl: album.images[bigImg(album.images)],
           tags: []
         };
         artistObj.albums.push(currentAlbum);
@@ -42,13 +42,12 @@ const sUserSearchForArtist = (userQuery)=>{
       return sReqByArtistForTopTracks(artistObj.id, credentials);
     })
     .then(topTracks =>{
-      console.log(topTracks.tracks[0].album)
       topTracks.tracks.forEach(track =>{
         let currentTrack = {
           title: track.name,
           id: track.id,
           albumId: track.album.id,
-          imageUrl: track.album.images[bigImg(track.album)],
+          imageUrl: track.album.images[bigImg(track.album.images)],
           tags: []
         };
         artistObj.topTracks.push(currentTrack);

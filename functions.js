@@ -25,11 +25,11 @@ function evaluateTag(tag, DB){
   });
 }
 
-function bigImg(artist){
+function bigImg(imagesArr){
   let biggest = 0;
   let bigIndex = 0;
   let i = 0;
-  artist.images.forEach(obj=>{
+  imagesArr.forEach(obj=>{
     if(obj.width > biggest){
       bigIndex = i;
       biggest= obj.width;
