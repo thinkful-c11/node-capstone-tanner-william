@@ -171,7 +171,12 @@ app.get('/tags/:tagId',(req,res)=>{
 });
 
 app.get('/testing/:artist', (req, res)=>{
-  sUserSearchForArtist(req.params.artist, res);
+  sUserSearchForArtist(req.params.artist)
+  .then(artist => res.json(artist))
+  .catch(err => {
+    console.error(err); 
+    res.sendStatus(500);
+  });
 });
 
 //Tanner Test Endpoints (probably don't need these)

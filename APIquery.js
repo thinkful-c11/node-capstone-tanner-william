@@ -2,12 +2,14 @@
 const fetch = require('node-fetch');
 const {getCredentials, baseUrl, bigImg, sReqByAlbumForSongs, sReqForArtistBySearch, sReqByArtistForTopTracks, sReqBySearch, sReqBySongIdForSong, sReqBySongTitleForSongs, sReqForAlbumById, sReqForAlbumBySearch, sReqForAlbumsByArtist, sReqRelated} = require('./functions');
 
-const sUserSearchForArtist = (userQuery, res)=>{
+const sUserSearchForArtist = (userQuery)=>{
   let artistObj;
   let credentials;
-  getCredentials().then(_credentials =>{
+  return getCredentials()
+  .then(_credentials =>{
     credentials = _credentials;
-    sReqForArtistBySearch(userQuery, credentials)
+    return sReqForArtistBySearch(userQuery, credentials);
+  })
     .then(artistsObj => {
       const artist = artistsObj.artists.items[0];
       artistObj = {
@@ -40,19 +42,19 @@ const sUserSearchForArtist = (userQuery, res)=>{
       return sReqByArtistForTopTracks(artistObj.id, credentials);
     })
     .then(topTracks =>{
+      console.log(topTracks.tracks[0].album)
       topTracks.tracks.forEach(track =>{
         let currentTrack = {
           title: track.name,
           id: track.id,
           albumId: track.album.id,
-          imageUrl: track.album.images[bigImg(track)],
+          imageUrl: track.album.images[bigImg(track.album)],
           tags: []
         };
         artistObj.topTracks.push(currentTrack);
       });
-      return res.json(artistObj);
+      return artistObj;
     });
-  });
 };
 
 module.exports = {sUserSearchForArtist};
