@@ -193,4 +193,13 @@ const sReqBySongTitleForSongs = (songTitle, credentials)=>{
     .catch(err => console.error(err));
 };
 
-module.exports = {getCredentials, bigImg, sReqRelated, sReqForArtistBySearch, sReqBySearch, evaluateTag, sReqByArtistForTopTracks, sReqByAlbumForSongs, sReqBySongIdForSong, sReqBySongTitleForSongs, sReqForAlbumsByArtist, sReqForAlbumBySearch, sReqForAlbumById, baseUrl};
+const getTagsFromAlbumWithId = (albumId)=>{
+  return fetch(`http://localhost:8080/find/tags/albums/${albumId}`)
+  .then(tags => {
+    return tags.json();
+  }).then(tags => {
+    return tags;
+  });
+};
+
+module.exports = {getCredentials, getTagsFromAlbumWithId, bigImg, sReqRelated, sReqForArtistBySearch, sReqBySearch, evaluateTag, sReqByArtistForTopTracks, sReqByAlbumForSongs, sReqBySongIdForSong, sReqBySongTitleForSongs, sReqForAlbumsByArtist, sReqForAlbumBySearch, sReqForAlbumById, baseUrl};

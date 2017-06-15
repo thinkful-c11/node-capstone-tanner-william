@@ -153,9 +153,28 @@ app.get('/tags/artists/:artistId',(req, res)=>{
 app.get('/tags/albums/:albumId',(req, res)=>{
   Albums
     .find({albumId: req.params.albumId})
-    .then(_res=> res.status(200).json(_res));
+    .then(_res=>{ 
+      console.log(res);
+      res.status(200).json(_res)
+    });
 });
 
+app.get('/find/tags/albums/:albumId', (req, res)=>{
+  Albums 
+    .find({albumId: req.params.albumId})
+    .then(album => {
+      if(album[0] === undefined){
+        return [];
+      }else{
+        return album[0].tags;
+      }
+    })
+    .then(tags => res.status(200).send(tags))
+    .catch(err => {
+      console.log(err);
+      res.sendStatus(500);
+    });
+});
 //Get specific song
 app.get('/tags/Songs/:songId',(req, res)=>{
   Songs

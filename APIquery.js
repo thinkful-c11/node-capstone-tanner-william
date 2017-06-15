@@ -1,10 +1,11 @@
 'use strict';
 const fetch = require('node-fetch');
-const {getCredentials, baseUrl, bigImg, sReqByAlbumForSongs, sReqForArtistBySearch, sReqByArtistForTopTracks, sReqBySearch, sReqBySongIdForSong, sReqBySongTitleForSongs, sReqForAlbumById, sReqForAlbumBySearch, sReqForAlbumsByArtist, sReqRelated} = require('./functions');
+const {getCredentials, baseUrl , getTagsFromAlbumWithId, bigImg, sReqByAlbumForSongs, sReqForArtistBySearch, sReqByArtistForTopTracks, sReqBySearch, sReqBySongIdForSong, sReqBySongTitleForSongs, sReqForAlbumById, sReqForAlbumBySearch, sReqForAlbumsByArtist, sReqRelated} = require('./functions');
 
-const sUserSearchForArtist = (userQuery)=>{
+function sUserSearchForArtist (userQuery){
   let artistObj;
   let credentials;
+  let promisesArray = [];
   return getCredentials()
   .then(_credentials =>{
     credentials = _credentials;
@@ -53,7 +54,19 @@ const sUserSearchForArtist = (userQuery)=>{
         artistObj.topTracks.push(currentTrack);
       });
       return artistObj;
+    })
+    .then(artist =>{
+      return Promise.all(
+       artist.albums.map((album) => {
+         return getTagsFromAlbumWithId(album.id);
+       })
+      );
+    }).then((tagIdArr) => {
+      for(let i = 0; i < artistObj.albums.length; i++){
+        artistObj.albums[i].tags = tagIdArr[i];
+      }
+      return artistObj;
     });
-};
+}
 
 module.exports = {sUserSearchForArtist};
