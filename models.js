@@ -38,7 +38,8 @@ const songsSchema = mongoose.Schema({
   title: String,
   albumId: String,
   songId: String,
-  tags: [String]
+  tags: [String],
+  artistId: String
 });
 
 const albumsSchema = mongoose.Schema({

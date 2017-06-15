@@ -100,6 +100,7 @@ app.put('/tags/songs', (req, res)=>{
   const songId = req.body.songId;
   const tag = req.body.tags;
   const artist = req.body.artist;
+  const artistId = req.body.artistId;
   let tagId;
   Songs
     .find({title: songTitle})
