@@ -2,6 +2,7 @@
 const fetch = require('node-fetch');
 const {CurrentArtist} = require('./models');
 const base64 = require('base-64');
+const {Albums} = require('./models');
 
 const baseUrl = 'https://api.spotify.com/v1/';
 
@@ -194,12 +195,15 @@ const sReqBySongTitleForSongs = (songTitle, credentials)=>{
 };
 
 const getTagsFromAlbumWithId = (albumId)=>{
-  return fetch(`http://localhost:8080/find/tags/albums/${albumId}`)
-  .then(tags => {
-    return tags.json();
-  }).then(tags => {
-    return tags;
-  });
+  return Albums 
+    .find({albumId: albumId})
+    .then(album => {
+      if(album[0] === undefined){
+        return [];
+      }else{
+        return album[0].tags;
+      }
+    });
 };
 
 module.exports = {getCredentials, getTagsFromAlbumWithId, bigImg, sReqRelated, sReqForArtistBySearch, sReqBySearch, evaluateTag, sReqByArtistForTopTracks, sReqByAlbumForSongs, sReqBySongIdForSong, sReqBySongTitleForSongs, sReqForAlbumsByArtist, sReqForAlbumBySearch, sReqForAlbumById, baseUrl};
