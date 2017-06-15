@@ -9,6 +9,7 @@ const {Stubs, Tags, Artists, Songs, Albums} = require('./models');
 const {DATABASE_URL, PORT} = require('./config');
 const dotenv = require('dotenv').config();
 const base64 = require('base-64');
+const {sUserSearchForArtist} = require('./APIquery');
 const {getCredentials, bigImg, sReqRelated, sReqBySearch, evaluateTag, sReqForAlbumsByArtist, sReqForAlbumBySearch, sReqForAlbumById,sReqByArtistForTopTracks, sReqByAlbumForSongs, sReqBySongIdForSong, sReqBySongTitleForSongs} = require('./functions');
 
 const app = express();
@@ -167,6 +168,10 @@ app.get('/tags/:tagId',(req,res)=>{
   Tags
     .findById(req.params.tagId)
     .then(_res=> res.status(200).json(_res));
+});
+
+app.get('/testing/:artist', (req, res)=>{
+  sUserSearchForArtist(req.params.artist, res);
 });
 
 //Tanner Test Endpoints (probably don't need these)

@@ -48,6 +48,18 @@ function sReqRelated (id, credentials){
     }});
 }
 
+const sReqForArtistBySearch = (userQuery, credentials)=>{
+  const searchUrl = `${baseUrl}search?type=artist&q=${userQuery}`;
+  return fetch(searchUrl,{
+    method: 'get',
+    headers: {
+      authorization: `Bearer ${credentials}`
+    }
+  })
+  .then(res => res.json())
+  .catch(err => console.error(err));
+};
+
 function sReqBySearch(baseUrl,type,query,clientRespond, credentials){
   const searchUrl = `${baseUrl}search?type=${type}&q=${query}`;
 
@@ -178,4 +190,4 @@ const sReqBySongTitleForSongs = (songTitle, credentials)=>{
     .catch(err => console.error(err));
 };
 
-module.exports = {getCredentials, bigImg, sReqRelated, sReqBySearch, evaluateTag, sReqByArtistForTopTracks, sReqByAlbumForSongs, sReqBySongIdForSong, sReqBySongTitleForSongs, sReqForAlbumsByArtist, sReqForAlbumBySearch, sReqForAlbumById};
+module.exports = {getCredentials, bigImg, sReqRelated, sReqForArtistBySearch, sReqBySearch, evaluateTag, sReqByArtistForTopTracks, sReqByAlbumForSongs, sReqBySongIdForSong, sReqBySongTitleForSongs, sReqForAlbumsByArtist, sReqForAlbumBySearch, sReqForAlbumById, baseUrl};
