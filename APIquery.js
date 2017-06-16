@@ -77,7 +77,8 @@ function sUserSearchForArtist (userQuery){
       return Promise.all(
       [getTagsFromArtistWithId(artist.id)]
       );
-    }).then((tagIdArr) => {
+    })
+    .then((tagIdArr) => {
       artistObj.tags = tagIdArr[0];
       return artistObj;
     })

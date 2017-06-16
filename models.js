@@ -29,7 +29,8 @@ tagSchema.plugin(findOrCreate);
 const artistsSchema = mongoose.Schema({
   artist: {type: String, required: true, unique: true},
   artistId: String,
-  tags: [String]
+  tags: [String],
+  tagIds: [String]
 });
 
 const songsSchema = mongoose.Schema({
@@ -39,6 +40,7 @@ const songsSchema = mongoose.Schema({
   albumId: String,
   songId: String,
   tags: [String],
+  tagIds: [String],
   artistId: String
 });
 
@@ -46,7 +48,8 @@ const albumsSchema = mongoose.Schema({
   artist: String,
   title: String,
   albumId: String,
-  tags: [String]
+  tags: [String],
+  tagIds: [String]
 });
 
 const currentArtist = {

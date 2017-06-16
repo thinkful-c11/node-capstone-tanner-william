@@ -46,7 +46,7 @@ app.put('/tags/artists', (req, res)=>{
         .then(res=>{
           tagId = res.doc._id;
           return Artists
-          .update({artist}, {$addToSet: {tags: tagId}});
+          .update({artist}, {$addToSet: {tags: tag, tagIds: tagId}});
         })
         .then(() => {
           return Artists
@@ -60,7 +60,7 @@ app.put('/tags/artists', (req, res)=>{
         evaluateTag(tag, Tags).then((res)=> {
           tagId = res.doc._id;
           return Artists
-          .create({artist: artist, artistId: artistId, tags: tagId});
+          .create({artist: artist, artistId: artistId, tags: tag, tagIds: tagId});
         })
         .then(_res => {
           res.status(201).json(_res);
@@ -86,7 +86,7 @@ app.put('/tags/albums', (req, res)=>{
         .then(res=>{
           tagId = res.doc._id;
           return Albums
-          .update({title: albumTitle}, {$addToSet: {tags: tagId}});
+          .update({title: albumTitle}, {$addToSet: {tags: tag, tagIds: tagId}});
         })
         .then(_res => res.status(202).send(_res))
         .catch(err => res.status(500).send(`No need to panic! Except maybe. Here's what went wrong, you tell me: ${err}`));
@@ -95,7 +95,7 @@ app.put('/tags/albums', (req, res)=>{
         .then(res =>{
           tagId = res.doc._id;
           return Albums
-          .create({title: albumTitle, artist: artist, tags: tagId, albumId: albumId});
+          .create({title: albumTitle, artist: artist, tags: tag, tagIds: tagId, albumId: albumId});
         })
         .then(_res => res.status(201).send(_res))
         .catch(err => console.error(err));
@@ -122,7 +122,7 @@ app.put('/tags/songs', (req, res)=>{
         .then(res => {
           tagId = res.doc._id;
           return Songs
-            .update({title: songTitle}, {$addToSet: {tags: tagId}});
+            .update({title: songTitle}, {$addToSet: {tags: tag, tagIds: tagId}});
         })
         .then(_res => res.status(202).send(_res))
         .catch(err => res.status(500).send(`No need to panic! Except maybe. Here's what went wrong, you tell me: ${err}`));
@@ -131,7 +131,7 @@ app.put('/tags/songs', (req, res)=>{
         .then(res => {
           tagId = res.doc._id;
           return Songs
-            .create({title: songTitle, artist: artist, tags: tagId, albumTitle: albumTitle, albumId: albumId, songId: songId});
+            .create({title: songTitle, artist: artist, tags: tag, tagIds: tagId, tagsText: tag, albumTitle: albumTitle, albumId: albumId, songId: songId});
         })
         .then(_res => {
           res.status(201).send(_res);
