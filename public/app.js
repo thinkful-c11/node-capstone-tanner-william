@@ -1,6 +1,14 @@
 const appState = {
   hasSearched: false,
   currentArtist:{},
+  tagsPane:{
+    displayAll: true,
+    displayId:'',
+    artists:[],
+    albums:[],
+    songs:[],
+    allTags:[]
+  }
 };
 
 /// Search Function - should work regardless of search type... hopefully. ////////
@@ -44,6 +52,47 @@ function getSetTags(identify){
       }
     });
 }
+
+function getTagsPane(){
+  fetch('./tags')
+  .then(res=> res.json())
+  .then(tags=> {
+    appState.tagsPane.allTags = tags;
+    return Promise.all(tags.map(tag=>{
+      return fetch(`./tags/${tag._id}/artists`)
+        .then(res=> res.json())
+        .then(json=> {
+          return json[0];
+        });
+    }));
+  })
+  .then(artists=> {
+    artists.forEach(artist=>{
+      if(!(artist === undefined)){
+        appState.tagsPane.artists.push(artist);
+      }
+    });
+    return appState.tagsPane.allTags;
+  })
+  .then(tags=> {
+    return Promise.all(tags.map(tag=> {
+      return fetch(`./tags/${tag._id}/albums`)
+        .then(res=> res.json())
+        .then(json=> {
+          return json[0];
+        });
+    }));
+  })
+  .then(albums=> {
+    albums.forEach(album=> {
+      if(!(album === undefined)){
+        appState.tagsPane.albums.push(album);
+      }
+    })
+  })
+}
+
+getTagsPane();
 
 function submitSearch(type, query){
   fetch(`./testing/${query}`)
@@ -149,10 +198,10 @@ function render(){
       <li class="album container"><img class="albumThumb" src=${album.imageUrl.url}><p>${album.title}</p>
       `;
     album.tags.forEach(tag=>{
-        html+= `
+      html+= `
         <div class="stubStyle"><div class="dot"></div></div><div class="stub">${tag}</div>
         `;
-      });
+    });
     html+= `<div class="stubStyle"><div class="dot"></div></div><div class="stub addStub" id="albums/${album.id}">Add New Stub</div></li>`;
   });
 
@@ -171,15 +220,17 @@ function render(){
         <li class="song container"><p>${song.title}</p>
       `;
     song.tags.forEach(tag=>{
-        html+= `
+      html+= `
           <div class="stubStyle"><div class="dot"></div></div><div class="stub">${tag}</div>
         `;
-      });
+    });
     html+= `<div class="stubStyle"><div class="dot"></div></div><div class="stub addStub" id="songs/${song.id}">Add New Stub</div></li>`;
   });
   html+= '</ul>';
 
   $('.songsPane').html(html);
+
+
     
 }
 

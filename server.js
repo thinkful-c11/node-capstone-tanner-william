@@ -154,6 +154,31 @@ app.get('/tags', (req, res)=>{
     .then(_res=> res.status(200).json(_res));
 });
 
+// Get all artists related to specific tag
+app.get('/tags/:tagId/artists',(req, res)=>{
+  return Artists
+    .find({tags: req.params.tagId})
+    .then(_res=>{
+      res.status(200).json(_res);
+    })
+    .catch(err=>{
+      console.error(err);
+      res.sendStatus(500);
+    });
+});
+
+app.get('/tags/:tagId/albums',(req, res)=>{
+  return Albums
+    .find({tags: req.params.tagId})
+    .then(_res=>{
+      res.status(200).json(_res);
+    })
+    .catch(err=>{
+      console.error(err);
+      res.sendStatus(500);
+    });
+});
+
 //Get a specific artist
 app.get('/tags/artists/:artistId',(req, res)=>{
   return Artists
