@@ -19,6 +19,32 @@ const appState = {
 //   });
 // }
 
+function getSetTags(identify){
+  return fetch(`http://localhost:8080/tags/${identify[0]}/${identify[1]}`)
+    .then(_res => _res)
+    .then(stream => stream.json())
+    .then(json => {
+      if(identify[0] === 'artists'){
+        console.log(json);
+        appState.currentArtist.tags = json[0].tags;
+      }
+      else if (identify[0] === 'albums'){
+        appState.currentArtist.albums.forEach(album=>{
+          if(album.id === json[0].albumId){
+            album.tags = json[0].tags;
+          }
+        });
+      }
+      else if(identify[0] === 'songs'){
+        appState.currentArtist.topTracks.forEach(song=>{
+          if(song.id === json[0].songId){
+            song.tags = json[0].tags;
+          }
+        });
+      }
+    });
+}
+
 function submitSearch(type, query){
   fetch(`./testing/${query}`)
   .then(stream => stream.json())
@@ -182,7 +208,7 @@ function eventHandler(){
     const identify = $(this).attr('id').split('/');
     const body = buildBody(identify[0], identify[1], input);
     console.log('this is body',body);
-    console.log('THIS IS IDENTIFY',identify[0]);
+    console.log('THIS IS IDENTIFY',identify[0], identify[1]);
     fetch(`http://localhost:8080/tags/${identify[0]}`,{
       method: 'PUT',
       headers:{
@@ -191,9 +217,9 @@ function eventHandler(){
       body: JSON.stringify(body)
     })
     .then(res => {
-      fetch(`http://locahost:8080/tags/${identify[0]}/${identify[1]}`)
-    .then(tags => console.log(tags))
+      return getSetTags(identify);
     })
+    .then(()=> render())
     .catch(err=>{
       console.log(err);
     });
