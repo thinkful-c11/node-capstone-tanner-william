@@ -88,7 +88,7 @@ function sUserSearchForArtist (userQuery){
        })
       );
     }).then((tagIdArr) => {
-      for(let i = 0; i < artistObj.albums.length; i++){
+      for(let i = 0; i < artistObj.topTracks.length; i++){
         artistObj.topTracks[i].tags = tagIdArr[i];
       }
       return artistObj;

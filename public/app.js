@@ -1,23 +1,84 @@
 const appState = {
+  hasSearched: false,
   currentArtist:{},
 };
 
-console.log(appState);
-
 /// Search Function - should work regardless of search type... hopefully. ////////
+// function submitSearch(type, query){
+//   fetch(`./search/${type}/${query}`)
+//   .then(response=>{return response.json();})
+//   .then(response=>{
+//     appState.currentArtist = response;
+//     appState.currentArtist.tags = response.genres;
+//     appState.currentArtist.tags.sort(function(a, b){
+//       return a.length - b.length;
+//     });
+//   })
+//   .then(()=>{
+//     render();
+//   });
+// }
+
 function submitSearch(type, query){
-  fetch(`./search/${type}/${query}`)
-  .then(response=>{return response.json();})
-  .then(response=>{
-    appState.currentArtist = response;
-    appState.currentArtist.tags = response.genres;
-    appState.currentArtist.tags.sort(function(a, b){
-      return a.length - b.length;
-    });
-  })
-  .then(()=>{
+  fetch(`./testing/${query}`)
+  .then(stream => stream.json())
+  .then(json => {
+    appState.hasSearched = true;
+    appState.currentArtist = json;
+    console.log(appState);
     render();
   });
+}
+
+function buildBody(type, id, tag){
+  let body;
+  if(type === 'artists'){
+   body = {
+     artist: appState.currentArtist.name,
+     artistId: id,
+     tags: tag
+   };
+  }
+  else if(type === 'albums'){
+    let albumId;
+    let albumTitle;
+    appState.currentArtist.albums.forEach(album=>{
+      if(album.id === id){
+        albumId = album.id;
+        albumTitle = album.title;
+      }
+    });
+    body = {
+      albumId: albumId,
+      albumTitle: albumTitle,
+      tags: tag,
+      artist: appState.currentArtist.name
+    };
+  }
+  else if(type === 'songs'){
+    let songTitle;
+    let albumTitle;
+    let albumId;
+    let songId;
+    appState.currentArtist.topTracks.forEach(song=>{
+      if (song.id === id){
+        songTitle = song.title;
+        albumTitle = song.albumTitle;
+        albumId = song.albumId;
+        songId = song.id;
+      }
+    });
+    body = {
+      songTitle,
+      albumTitle,
+      albumId,
+      songId,
+      tags: tag,
+      artist: appState.currentArtist.name,
+      artistId: appState.currentArtist.id
+    };
+  }
+  return body;
 }
 
 ////// Main render function ////////
@@ -27,29 +88,22 @@ function render(){
 
   let html = `
     <div class="artistBanner container">
-      <img class="artistPhoto main" src="${appState.currentArtist.imageUrl}">
+      <img class="artistPhoto main" src="${appState.currentArtist.imageUrl.url}">
       <h3>${appState.currentArtist.name}</h3>
     </div>
     <div class="currentArtist">
-      <div class="artistDescription">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque euismod, lorem molestie accumsan ultrices, libero elit mollis nibh, non pellentesque dolor urna at libero. Proin ac rhoncus massa. Nulla facilisi. Vestibulum eu tristique lorem, id semper erat. Vestibulum eget justo ac mauris fringilla aliquam. Nullam feugiat purus sed justo ullamcorper bibendum. Pellentesque venenatis et lectus sed ornare. Nullam et luctus dui. Praesent varius purus et dolor rhoncus ornare.
-
-        In vestibulum volutpat ligula, eget pellentesque risus aliquet a. Donec gravida nisi eros, at porta nulla sollicitudin eu. Sed quis imperdiet metus. Praesent a nisi sit amet tortor vestibulum lacinia a ac enim. Praesent eleifend neque varius, ornare est ut, interdum ante. Aliquam erat volutpat. Cras leo elit, gravida nec urna et, pretium pulvinar risus. Etiam dignissim tristique rhoncus. Quisque lacinia at nisl ut placerat. Duis nec tempus sem. Pellentesque cursus ligula vitae lorem vestibulum scelerisque. Nullam consectetur orci ac magna eleifend semper. Maecenas sagittis, arcu at suscipit dapibus, augue orci rhoncus ligula, ac lobortis tellus mauris eu tellus.
-
-        Donec varius velit et elit viverra, eu porttitor urna ultrices. Vivamus ultrices neque eget odio condimentum, in pulvinar eros vehicula. Suspendisse suscipit, orci sit amet elementum tincidunt, augue libero blandit ex, in fermentum nulla neque quis nisi. Pellentesque auctor lobortis orci in ullamcorper. Maecenas sed elit libero. Vestibulum eleifend tortor eget lacus varius, in volutpat est consectetur. Suspendisse quis ornare lectus. Nunc faucibus non orci non lobortis. Nam ultricies erat a maximus lacinia.</p>
-      </div>
       <div class="contentBanner"><h2>Stubs</h2></div>
       <ul class="stubs content container">
     `;
     appState.currentArtist.tags.forEach(item=>{
       html+= `<li class="container"><div class="stubStyle"><div class="dot"></div></div><div class="stub">${item}</div></li>`;
     });
-    html+= `</ul>
+    html+= `<li class="container"><div class="stubStyle"><div class="dot"></div></div><div class="addStub stub" id="artists/${appState.currentArtist.id}">Add New Stub</div></li>
+      </ul>
       <div class="contentBanner"><h2>Related Artists</h2></div>
       <ul class="related content container">`;
     appState.currentArtist.related.forEach(item=>{
-      html+= `<li class="relatedArtist container">
-              <img class="artistPhoto" src="${item.imageUrl}">
+      html+= `<li class="container">
               <div class="relatedName">${item.name}</div>
             </li>`;
     });
@@ -57,6 +111,50 @@ function render(){
     html+= `</ul></div>`;
 
     $('.item.one').html(html);
+
+    // Renders albums w/ images, names, & stubs
+
+    html = `
+      <ul class="albums content container">
+     `;
+
+    appState.currentArtist.albums.forEach(album=>{
+      html+= `
+      <li class="album container"><img class="albumThumb" src=${album.imageUrl.url}><p>${album.title}</p>
+      `;
+      album.tags.forEach(tag=>{
+        html+= `
+        <div class="stubStyle"><div class="dot"></div></div><div class="stub">${tag}</div>
+        `;
+      });
+      html+= `<div class="stubStyle"><div class="dot"></div></div><div class="stub addStub" id="albums/${album.id}">Add New Stub</div></li>`;
+    });
+
+    html+= `</ul>`;
+
+    $('.albumsPane').html(html);
+
+    // Renders top tracks w/ stubs
+
+    html=`
+    <ul class="topTracks content container">
+    `
+
+    appState.currentArtist.topTracks.forEach(song=>{
+      html+=`
+        <li class="song container"><p>${song.title}</p>
+      `;
+      song.tags.forEach(tag=>{
+        html+= `
+          <div class="stubStyle"><div class="dot"></div></div><div class="stub">${tag}</div>
+        `;
+      });
+      html+= `<div class="stubStyle"><div class="dot"></div></div><div class="stub addStub" id="songs/${song.id}">Add New Stub</div></li>`;
+    });
+    html+= `</ul>`;
+
+    $('.songsPane').html(html);
+    
 }
 
 
@@ -69,6 +167,40 @@ function eventHandler(){
     let type='artist';
     let query= $('#queryString').val();
     submitSearch(type,query);
+  });
+
+  $('.pane').on('click', '.addStub', function(e){
+    e.stopPropagation();
+    console.log(this);
+    $(this).removeClass('addStub');
+    $(this).html(`<form class="stubForm" id="${$(this).attr('id')}"><input class="stubInput" type="text"></form><span class="cancelAdd">X</span>`);
+  });
+
+  $('.pane').on('submit', '.stubForm', function(e){
+    e.stopPropagation();
+    e.preventDefault();
+    const input = $('.stubInput').val()
+    const identify = $(this).attr('id').split('/');
+    const body = buildBody(identify[0], identify[1], input)
+
+    fetch(`http://localhost:8080/tags/${identify[0]}`,{
+      method: 'PUT',
+      headers:{
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    })
+    .then(res=>{
+      if (res.status === 202 || 201){
+        submitSearch('artist', appState.currentArtist.name);
+      }else{
+        console.log('Uh oh... something went wrong.', res.status, res.statusText);
+      }
+    })
+    .catch(err=>{
+      console.log(err);
+    });
+
   });
   
 }

@@ -212,16 +212,8 @@ main{
   flex-grow:1;
 }
 
-iframe{
-  width:95%;
-  height:100%;
-  border-radius:10px;
-  box-shadow: 0px 5px 10px rgba(0,0,0,0.5);
-  overflow:hide;
-  margin:auto;
-}
 
-.myArtists{
+.myArtists, .albumsPane, .songsPane{
   padding:10px;
   background-color:black;
   flex-grow:1;
@@ -229,4 +221,11 @@ iframe{
   box-shadow: 0px 5px 10px rgba(0,0,0,0.5);
   width:95%;
   height:100%;
+  margin-right:10px;
+  margin-left:10px;
+}
+
+.albumThumb{
+  width:20px;
+  height:20px;
 }

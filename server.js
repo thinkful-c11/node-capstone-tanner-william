@@ -26,6 +26,11 @@ app.get('/', (req, res)=>{
   res.sendFile(__dirname + '/public/index.html');
 });
 
+//testing input
+app.put('/test/tags/artists',(req,res)=>{
+  console.log(req.body);
+});
+
 //Create or update Artist / Tag
 app.put('/tags/artists', (req, res)=>{
   const artist = req.body.artist;
