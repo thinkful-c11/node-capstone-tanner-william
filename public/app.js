@@ -7,7 +7,15 @@ const appState = {
     artists:[],
     albums:[],
     songs:[],
-    allTags:[]
+    allTags:[],
+    // allTags:[
+    //   {
+    //     tag:'',
+    //     artists:[],
+    //     albums:[],
+    //     songs:[]
+    //   }
+    // ]
   }
 };
 
@@ -88,7 +96,8 @@ function getTagsPane(){
       if(!(album === undefined)){
         appState.tagsPane.albums.push(album);
       }
-    })
+    });
+    console.log(appState);
   })
 }
 

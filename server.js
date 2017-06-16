@@ -179,6 +179,21 @@ app.get('/tags/:tagId/albums',(req, res)=>{
     });
 });
 
+app.get('/alltags', (req,res)=>{
+  Tags
+    .find()
+    .then(tags=>{
+      return tags.map(tag=>{
+        return Promise.all(
+          [Albums.find({tag: tag.id}), Songs.find({tags:})]
+        );
+      })
+      .then(x=>{
+        console.log(x);
+      })
+    })
+})
+
 //Get a specific artist
 app.get('/tags/artists/:artistId',(req, res)=>{
   return Artists
