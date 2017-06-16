@@ -48,7 +48,13 @@ app.put('/tags/artists', (req, res)=>{
           return Artists
           .update({artist}, {$addToSet: {tags: tagId}});
         })
-        .then(_res => res.status(202).send(_res))
+        .then(() => {
+          return Artists
+            .find({artist});
+        })
+        .then(_res => {
+          res.status(202).json(_res);
+        })
         .catch(err => res.status(500).send(`No need to panic! Except maybe. Here's what went wrong, you tell me: ${err}`));
       }else{
         evaluateTag(tag, Tags).then((res)=> {
@@ -57,7 +63,7 @@ app.put('/tags/artists', (req, res)=>{
           .create({artist: artist, artistId: artistId, tags: tagId});
         })
         .then(_res => {
-          res.status(201).send(_res);
+          res.status(201).json(_res);
         })
         .catch(err=> console.error(err));
       }
@@ -80,7 +86,7 @@ app.put('/tags/albums', (req, res)=>{
         .then(res=>{
           tagId = res.doc._id;
           return Albums
-          .update({title: albumTitle}, {$addToSet: {tags: tagId}})
+          .update({title: albumTitle}, {$addToSet: {tags: tagId}});
         })
         .then(_res => res.status(202).send(_res))
         .catch(err => res.status(500).send(`No need to panic! Except maybe. Here's what went wrong, you tell me: ${err}`));
@@ -150,9 +156,12 @@ app.get('/tags', (req, res)=>{
 
 //Get a specific artist
 app.get('/tags/artists/:artistId',(req, res)=>{
-  Artists
+  return Artists
     .find({artistId: req.params.artistId})
-    .then(_res=> res.status(200).json(_res));
+    .then(_res=> {
+      console.log(_res);
+      res.status(200).json(_res)
+    });
 });
 
 //Get specific album
@@ -161,7 +170,7 @@ app.get('/tags/albums/:albumId',(req, res)=>{
     .find({albumId: req.params.albumId})
     .then(_res=>{ 
       console.log(res);
-      res.status(200).json(_res)
+      res.status(200).json(_res);
     });
 });
 

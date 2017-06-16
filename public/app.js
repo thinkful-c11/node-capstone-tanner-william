@@ -33,11 +33,11 @@ function submitSearch(type, query){
 function buildBody(type, id, tag){
   let body;
   if(type === 'artists'){
-   body = {
-     artist: appState.currentArtist.name,
-     artistId: id,
-     tags: tag
-   };
+    body = {
+      artist: appState.currentArtist.name,
+      artistId: id,
+      tags: tag
+    };
   }
   else if(type === 'albums'){
     let albumId;
@@ -95,65 +95,65 @@ function render(){
       <div class="contentBanner"><h2>Stubs</h2></div>
       <ul class="stubs content container">
     `;
-    appState.currentArtist.tags.forEach(item=>{
-      html+= `<li class="container"><div class="stubStyle"><div class="dot"></div></div><div class="stub">${item}</div></li>`;
-    });
-    html+= `<li class="container"><div class="stubStyle"><div class="dot"></div></div><div class="addStub stub" id="artists/${appState.currentArtist.id}">Add New Stub</div></li>
+  appState.currentArtist.tags.forEach(item=>{
+    html+= `<li class="container"><div class="stubStyle"><div class="dot"></div></div><div class="stub">${item}</div></li>`;
+  });
+  html+= `<li class="container"><div class="stubStyle"><div class="dot"></div></div><div class="addStub stub" id="artists/${appState.currentArtist.id}">Add New Stub</div></li>
       </ul>
       <div class="contentBanner"><h2>Related Artists</h2></div>
       <ul class="related content container">`;
-    appState.currentArtist.related.forEach(item=>{
-      html+= `<li class="container">
+  appState.currentArtist.related.forEach(item=>{
+    html+= `<li class="container">
               <div class="relatedName">${item.name}</div>
             </li>`;
-    });
+  });
 
-    html+= `</ul></div>`;
+  html+= '</ul></div>';
 
-    $('.item.one').html(html);
+  $('.item.one').html(html);
 
     // Renders albums w/ images, names, & stubs
 
-    html = `
+  html = `
       <ul class="albums content container">
      `;
 
-    appState.currentArtist.albums.forEach(album=>{
-      html+= `
+  appState.currentArtist.albums.forEach(album=>{
+    html+= `
       <li class="album container"><img class="albumThumb" src=${album.imageUrl.url}><p>${album.title}</p>
       `;
-      album.tags.forEach(tag=>{
+    album.tags.forEach(tag=>{
         html+= `
         <div class="stubStyle"><div class="dot"></div></div><div class="stub">${tag}</div>
         `;
       });
-      html+= `<div class="stubStyle"><div class="dot"></div></div><div class="stub addStub" id="albums/${album.id}">Add New Stub</div></li>`;
-    });
+    html+= `<div class="stubStyle"><div class="dot"></div></div><div class="stub addStub" id="albums/${album.id}">Add New Stub</div></li>`;
+  });
 
-    html+= `</ul>`;
+  html+= '</ul>';
 
-    $('.albumsPane').html(html);
+  $('.albumsPane').html(html);
 
     // Renders top tracks w/ stubs
 
-    html=`
+  html=`
     <ul class="topTracks content container">
-    `
+    `;
 
-    appState.currentArtist.topTracks.forEach(song=>{
-      html+=`
+  appState.currentArtist.topTracks.forEach(song=>{
+    html+=`
         <li class="song container"><p>${song.title}</p>
       `;
-      song.tags.forEach(tag=>{
+    song.tags.forEach(tag=>{
         html+= `
           <div class="stubStyle"><div class="dot"></div></div><div class="stub">${tag}</div>
         `;
       });
-      html+= `<div class="stubStyle"><div class="dot"></div></div><div class="stub addStub" id="songs/${song.id}">Add New Stub</div></li>`;
-    });
-    html+= `</ul>`;
+    html+= `<div class="stubStyle"><div class="dot"></div></div><div class="stub addStub" id="songs/${song.id}">Add New Stub</div></li>`;
+  });
+  html+= '</ul>';
 
-    $('.songsPane').html(html);
+  $('.songsPane').html(html);
     
 }
 
@@ -163,15 +163,14 @@ function eventHandler(){
 
   $('#search').submit(
     event=>{
-    event.preventDefault();
-    let type='artist';
-    let query= $('#queryString').val();
-    submitSearch(type,query);
-  });
+      event.preventDefault();
+      let type='artist';
+      let query= $('#queryString').val();
+      submitSearch(type,query);
+    });
 
   $('.pane').on('click', '.addStub', function(e){
     e.stopPropagation();
-    console.log(this);
     $(this).removeClass('addStub');
     $(this).html(`<form class="stubForm" id="${$(this).attr('id')}"><input class="stubInput" type="text"></form><span class="cancelAdd">X</span>`);
   });
@@ -179,10 +178,11 @@ function eventHandler(){
   $('.pane').on('submit', '.stubForm', function(e){
     e.stopPropagation();
     e.preventDefault();
-    const input = $('.stubInput').val()
+    const input = $('.stubInput').val();
     const identify = $(this).attr('id').split('/');
-    const body = buildBody(identify[0], identify[1], input)
-
+    const body = buildBody(identify[0], identify[1], input);
+    console.log('this is body',body);
+    console.log('THIS IS IDENTIFY',identify[0]);
     fetch(`http://localhost:8080/tags/${identify[0]}`,{
       method: 'PUT',
       headers:{
@@ -190,12 +190,8 @@ function eventHandler(){
       },
       body: JSON.stringify(body)
     })
-    .then(res=>{
-      if (res.status === 202 || 201){
-        submitSearch('artist', appState.currentArtist.name);
-      }else{
-        console.log('Uh oh... something went wrong.', res.status, res.statusText);
-      }
+    .then(res => {
+      fetch(`http://locahost:8080/tags/artists/${id}`).then(tags => console.log(tags))
     })
     .catch(err=>{
       console.log(err);
