@@ -139,7 +139,7 @@ function render(){
   html+= `<li class="container"><div class="stubStyle"><div class="dot"></div></div><div class="addStub stub" id="artists/${appState.currentArtist.id}">Add New Stub</div></li>
       </ul>
       <div class="contentBanner"><h2>Related Artists</h2></div>
-      <ul class="related content container">`;
+      <ul>`;
   appState.currentArtist.related.forEach(item=>{
     html+= `<li class="container">
               <div class="relatedName">${item.name}</div>
@@ -202,7 +202,7 @@ function render(){
   appState.allTags.forEach(tag=>{
     html+=`
         <div class="stubStyle"><div class="dot"></div></div><div class="stub">${tag.tag}</div>
-        <h2>Artists</h2>
+        <br><div><h2>Artists</h2></div><br>
       `;
     tag.artists.forEach(artist=>{
       if(!(artist.artist === undefined)){
@@ -212,7 +212,7 @@ function render(){
       }
     });
     html+= `
-      <h2>Albums</h2>
+      <br><div><h2>Albums</h2></div><br>
     `;
     tag.albums.forEach(album=>{
       if(!(album.title === undefined)){
@@ -222,7 +222,7 @@ function render(){
       }
     });
     html+= `
-      <h2>Songs</h2>
+      <br><div><h2>Songs</h2></div><br>
     `;
     tag.songs.forEach(song=>{
       if(!(song.title === undefined)){

@@ -197,7 +197,7 @@ main{
 .item.one{
   max-width:50%;
   max-height:90vh;
-  flex-grow:2;
+  flex-grow:1;
 }
 
 .item.two{
