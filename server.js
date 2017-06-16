@@ -31,6 +31,34 @@ app.put('/test/tags/artists',(req,res)=>{
   console.log(req.body);
 });
 
+app.get('/alltags', (req,res)=>{
+  let tags;
+  Tags
+    .find()
+    .then(_tags=>{
+      tags = _tags;
+      return Promise.all(
+      tags.map(tag=>{
+        console.log(tag);
+        return Promise.all(
+          [Artists.find({tagIds: tag._id}), Albums.find({tagIds: tag._id}), Songs.find({tagIds: tag._id})]
+        );
+      }));
+    })
+    .then(rawData=>{
+      res.json(
+      rawData.map((tagItems, i)=>{
+        return {
+          tag: tags[i].tag,
+          artists: tagItems[0],
+          albums: tagItems[1],
+          songs: tagItems[2]
+        };
+      })
+      );
+    });
+});
+
 //Create or update Artist / Tag
 app.put('/tags/artists', (req, res)=>{
   const artist = req.body.artist;

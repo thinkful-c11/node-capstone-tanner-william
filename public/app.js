@@ -1,6 +1,7 @@
 const appState = {
   hasSearched: false,
   currentArtist:{},
+  allTags:[]
 };
 
 /// Search Function - should work regardless of search type... hopefully. ////////
@@ -44,6 +45,17 @@ function getSetTags(identify){
       }
     });
 }
+
+function getTagsPane(){
+  fetch('./alltags')
+  .then(stream=> stream.json())
+  .then(allTags=> {
+    appState.allTags = allTags;
+    console.log(appState);
+  });
+}
+
+getTagsPane();
 
 function submitSearch(type, query){
   fetch(`./testing/${query}`)
@@ -149,10 +161,10 @@ function render(){
       <li class="album container"><img class="albumThumb" src=${album.imageUrl.url}><p>${album.title}</p>
       `;
     album.tags.forEach(tag=>{
-        html+= `
+      html+= `
         <div class="stubStyle"><div class="dot"></div></div><div class="stub">${tag}</div>
         `;
-      });
+    });
     html+= `<div class="stubStyle"><div class="dot"></div></div><div class="stub addStub" id="albums/${album.id}">Add New Stub</div></li>`;
   });
 
@@ -171,15 +183,62 @@ function render(){
         <li class="song container"><p>${song.title}</p>
       `;
     song.tags.forEach(tag=>{
-        html+= `
+      html+= `
           <div class="stubStyle"><div class="dot"></div></div><div class="stub">${tag}</div>
         `;
-      });
+    });
     html+= `<div class="stubStyle"><div class="dot"></div></div><div class="stub addStub" id="songs/${song.id}">Add New Stub</div></li>`;
   });
   html+= '</ul>';
 
   $('.songsPane').html(html);
+
+  getTagsPane();
+
+  html=`
+      <ul class="allTags content container">
+    `;
+
+  appState.allTags.forEach(tag=>{
+    html+=`
+        <div class="stubStyle"><div class="dot"></div></div><div class="stub">${tag.tag}</div>
+        <h2>Artists</h2>
+      `;
+    tag.artists.forEach(artist=>{
+      if(!(artist.artist === undefined)){
+        html+=`
+          <p>${artist.artist}</p>
+        `;
+      }
+    });
+    html+= `
+      <h2>Albums</h2>
+    `;
+    tag.albums.forEach(album=>{
+      if(!(album.title === undefined)){
+        html+=`
+          <p>${album.title}</p>
+        `;
+      }
+    });
+    html+= `
+      <h2>Songs</h2>
+    `;
+    tag.songs.forEach(song=>{
+      if(!(song.title === undefined)){
+        html+=`
+          <p>${song.title}</p>
+        `;
+      }
+    });
+  });
+
+  html+=`
+      </ul>
+    `;
+
+  $('.tagsPane').html(html);
+      
     
 }
 
