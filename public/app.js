@@ -191,7 +191,8 @@ function eventHandler(){
       body: JSON.stringify(body)
     })
     .then(res => {
-      fetch(`http://locahost:8080/tags/artists/${id}`).then(tags => console.log(tags))
+      fetch(`http://locahost:8080/tags/${identify[0]}/${identify[1]}`)
+    .then(tags => console.log(tags))
     })
     .catch(err=>{
       console.log(err);

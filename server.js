@@ -160,7 +160,11 @@ app.get('/tags/artists/:artistId',(req, res)=>{
     .find({artistId: req.params.artistId})
     .then(_res=> {
       console.log(_res);
-      res.status(200).json(_res)
+      res.status(200).json(_res);
+    })
+    .catch(err => {
+      console.err(err);
+      res.sendStatus(500);
     });
 });
 
