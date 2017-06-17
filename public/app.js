@@ -64,8 +64,9 @@ function submitSearch(type, query){
     appState.hasSearched = true;
     appState.currentArtist = json;
     console.log(appState);
-    render();
-  });
+    return getTagsPane();
+  })
+  .then(()=> render());
 }
 
 function buildBody(type, id, tag){
@@ -126,8 +127,8 @@ function render(){
 
   let html = `
     <div class="artistBanner container">
-      <img class="artistPhoto main" src="${appState.currentArtist.imageUrl.url}">
-      <h3>${appState.currentArtist.name}</h3>
+      <div class="artistPhoto main"><img class="aP"src="${appState.currentArtist.imageUrl.url}"></div>
+      <div class="artistName"><h3>${appState.currentArtist.name}</h3></div>
     </div>
     <div class="currentArtist">
       <div class="contentBanner"><h2>Stubs</h2></div>
@@ -139,9 +140,9 @@ function render(){
   html+= `<li class="container"><div class="stubStyle"><div class="dot"></div></div><div class="addStub stub" id="artists/${appState.currentArtist.id}">Add New Stub</div></li>
       </ul>
       <div class="contentBanner"><h2>Related Artists</h2></div>
-      <ul>`;
+      <ul class="content container column">`;
   appState.currentArtist.related.forEach(item=>{
-    html+= `<li class="container">
+    html+= `<li class="relatedArtist container">
               <div class="relatedName">${item.name}</div>
             </li>`;
   });
@@ -278,6 +279,7 @@ function eventHandler(){
     .then(res => {
       return getSetTags(identify);
     })
+    .then(()=> getTagsPane())
     .then(()=> render())
     .catch(err=>{
       console.log(err);

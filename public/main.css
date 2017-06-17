@@ -21,7 +21,7 @@ h2{
 }
 
 h3{
-  font-size:35px;
+  font-size:50px;
 }
 
 header{
@@ -35,8 +35,9 @@ header{
 .navbar{
   color:white;
   justify-content: space-between;
-  width:90%;
   margin:auto;
+  padding-left:10px;
+  padding-right: 10px;
 }
 
 #queryString{
@@ -72,13 +73,17 @@ main{
   height:100vh;
   width:100vw;
   justify-content: space-around;
+  flex-direction:row;
 }
 
 .artistPhoto{
+  text-align: center;
   border-radius: 100%;
+  /*overflow:hidden;*/
   width:75px;
   height:75px;
   margin-bottom:10px;
+  margin-right:10px;
   box-shadow: 0px 5px 10px rgba(0,0,0,0.5);
   display:block;
 }
@@ -86,6 +91,17 @@ main{
 .artistPhoto.main{
   width:100px;
   height:100px;
+  margin:auto;
+  overflow: hidden;
+}
+
+.aP{
+  min-width:100px;
+  min-width:100px;
+  max-width:150px;
+  max-height:150px;
+  width:auto;
+  height:auto;
 }
 
 .currentArtist{
@@ -93,15 +109,14 @@ main{
   background-color:black;
   border-radius:0px 0px 10px 10px;
   flex-grow:2;
-  max-width: 95%;
-  max-height:72%;
+  max-height:54.5vh;
   box-shadow: 0px 5px 10px rgba(0,0,0,0.5);
   overflow: scroll;
   padding:10px;
+  margin:auto;
 }
 
 .artistBanner{
-  flex-direction:column;
   align-items: center;
   margin-bottom:10px;
   padding:10px;
@@ -109,7 +124,13 @@ main{
   background-color:#FFE75B;
   color:black;
   flex-grow:2;
-  max-width:95%;
+  margin:auto;
+}
+
+.artistName{
+  text-align: center;
+  padding:10px;
+  margin:auto;
 }
 
 .body{
@@ -162,6 +183,10 @@ main{
   margin:auto;
 }
 
+.column{
+  flex-direction:column;
+}
+
 .contentBanner{
   width:90%;
   margin:auto;
@@ -176,12 +201,11 @@ main{
   flex-direction:row;
   overflow: scroll;
   font-size: 21px;
-  margin-bottom:10px;
+  margin:10px;
   padding:10px;
   border-radius:5px 5px 5px 5px;
   background-color:#FFE75B;
   color:black;
-  width:30%;
   height:125px;
 }
 
@@ -228,4 +252,13 @@ main{
 .albumThumb{
   width:20px;
   height:20px;
+}
+
+.artistPane{
+  margin-left:10px;
+  margin-right:10px;
+}
+
+.body.item.one.container.pane.artistPane{
+  max-width:33%;
 }
