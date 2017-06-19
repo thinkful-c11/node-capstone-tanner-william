@@ -135,14 +135,14 @@ function render(){
       <ul class="stubs content container">
     `;
   appState.currentArtist.tags.forEach(item=>{
-    html+= `<li class="container"><div class="stubStyle"><div class="dot"></div></div><div class="stub">${item}</div></li>`;
+    html+= `<li class="oh container"><div class="stubStyle"><div class="dot"></div></div><div class="stub">${item}</div></li>`;
   });
-  html+= `<li class="container"><div class="stubStyle"><div class="dot"></div></div><div class="addStub stub" id="artists/${appState.currentArtist.id}">Add New Stub</div></li>
+  html+= `<li class="oh container"><div class="stubStyle"><div class="dot"></div></div><div class="addStub stub" id="artists/${appState.currentArtist.id}">+</div></li>
       </ul>
       <div class="contentBanner"><h2>Related Artists</h2></div>
       <ul class="content container column">`;
   appState.currentArtist.related.forEach(item=>{
-    html+= `<li class="relatedArtist container">
+    html+= `<li class="oh relatedArtist container">
               <div class="relatedName">${item.name}</div>
             </li>`;
   });
@@ -153,20 +153,22 @@ function render(){
 
     // Renders albums w/ images, names, & stubs
 
+  $('.albums.contentHeader').html(`<h2>Albums by ${appState.currentArtist.name}</h2>`);
+
   html = `
-      <ul class="albums content container">
+      <ul class="albums content container center">
      `;
 
   appState.currentArtist.albums.forEach(album=>{
     html+= `
-      <li class="album container"><img class="albumThumb" src=${album.imageUrl.url}><p>${album.title}</p>
+      <li class="album container"><img class="albumThumb" src=${album.imageUrl.url}><div class="albumTitle container"><div>${album.title}</div></div></li><ul class="stubs container albumStubs">
       `;
     album.tags.forEach(tag=>{
       html+= `
-        <div class="stubStyle"><div class="dot"></div></div><div class="stub">${tag}</div>
+        <li class="oh container"><div class="stubStyle"><div class="dot"></div></div><div class="stub">${tag}</div></li>
         `;
     });
-    html+= `<div class="stubStyle"><div class="dot"></div></div><div class="stub addStub" id="albums/${album.id}">Add New Stub</div></li>`;
+    html+= `<li class="oh container"><div class="stubStyle"><div class="dot"></div></div><div class="stub addStub" id="albums/${album.id}">+</div></li></ul>`;
   });
 
   html+= '</ul>';
@@ -174,6 +176,8 @@ function render(){
   $('.albumsPane').html(html);
 
     // Renders top tracks w/ stubs
+  
+  $('.songs.contentHeader').html(`<h2>${appState.currentArtist.name}'s Top Tracks</h2>`);
 
   html=`
     <ul class="topTracks content container">
@@ -181,14 +185,14 @@ function render(){
 
   appState.currentArtist.topTracks.forEach(song=>{
     html+=`
-        <li class="song container"><p>${song.title}</p>
+        <li class="song container"><h2>${song.title}</h2></li><ul class="stubs content container songStubs">
       `;
     song.tags.forEach(tag=>{
       html+= `
-          <div class="stubStyle"><div class="dot"></div></div><div class="stub">${tag}</div>
+          <li class="oh container"><div class="stubStyle"><div class="dot"></div></div><div class="stub">${tag}</div></li>
         `;
     });
-    html+= `<div class="stubStyle"><div class="dot"></div></div><div class="stub addStub" id="songs/${song.id}">Add New Stub</div></li>`;
+    html+= `<li class="oh container"><div class="stubStyle"><div class="dot"></div></div><div class="stub addStub" id="songs/${song.id}">+</div></li></ul>`;
   });
   html+= '</ul>';
 
@@ -285,6 +289,10 @@ function eventHandler(){
       console.log(err);
     });
 
+  });
+
+  $('.veggieBurger').click(e=>{
+    $('.myArtists').show();
   });
   
 }

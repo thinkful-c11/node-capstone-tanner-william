@@ -47,7 +47,7 @@ header{
   width:400px;
   background-color:rgba(255,255,255,0.3);
   border-style: none;
-  border-radius: 2%;
+  border-radius: 3px;
   text-align: center;
   color:white;
 }
@@ -109,7 +109,7 @@ main{
   background-color:black;
   border-radius:0px 0px 10px 10px;
   flex-grow:2;
-  max-height:54.5vh;
+  height:100%;
   box-shadow: 0px 5px 10px rgba(0,0,0,0.5);
   overflow: scroll;
   padding:10px;
@@ -130,6 +130,7 @@ main{
 .artistName{
   text-align: center;
   padding:10px;
+  width:100%;
   margin:auto;
 }
 
@@ -176,11 +177,17 @@ main{
   margin-top:-2px;
 }
 
+.addStub{
+  padding-left:10px;
+  padding-right:10px;
+}
+
 .content{
   margin-top:5px;
   margin-bottom:5px;
   width:90%;
   margin:auto;
+  z-index:9998;
 }
 
 .column{
@@ -201,12 +208,11 @@ main{
   flex-direction:row;
   overflow: scroll;
   font-size: 21px;
-  margin:10px;
-  padding:10px;
+  margin:3px;
+  padding:5px;
   border-radius:5px 5px 5px 5px;
   background-color:#FFE75B;
   color:black;
-  height:125px;
 }
 
 .relatedName{
@@ -220,7 +226,7 @@ main{
 
 .item.one{
   max-width:50%;
-  max-height:90vh;
+  max-height:61.5vh;
   flex-grow:1;
 }
 
@@ -231,34 +237,111 @@ main{
 }
 
 .item.three{
-  max-width:18%;
+  max-width:32%;
   max-height:90vh;
   flex-grow:1;
+  position:relative;
 }
 
 
 .myArtists, .albumsPane, .songsPane{
   padding:10px;
+  padding-top:100px;
   background-color:black;
   flex-grow:1;
   border-radius:10px;
   box-shadow: 0px 5px 10px rgba(0,0,0,0.5);
-  width:95%;
+  width:100%;
   height:100%;
-  margin-right:10px;
-  margin-left:10px;
+  overflow:scroll;
 }
 
 .albumThumb{
-  width:20px;
-  height:20px;
+  width:100%;
+  height:100%;
+  box-shadow: 0px 5px 10px rgba(255,255,255,0.12);
 }
 
-.artistPane{
-  margin-left:10px;
-  margin-right:10px;
+.albumStubs{
+  margin-top:10px;
+  margin-bottom:20px;
 }
 
 .body.item.one.container.pane.artistPane{
-  max-width:33%;
+  max-width:32%;
+}
+
+.albumTitle{
+  opacity:0;
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background-color:rgba(0, 0, 0, 0.65);
+  z-index:9999;
+  display:flex;
+  flex-direction:column;
+  align-content: center;
+  justify-content:center;
+  text-align:center;
+  transition: opacity .2s;
+}
+
+.albumTitle:hover{
+  opacity:1;
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background-color:rgba(0, 0, 0, 0.85);
+  z-index:9999;
+  display:flex;
+  flex-direction:column;
+  text-align:center;
+  justify-content: center;
+}
+
+.album{
+  position:relative;
+  z-index:9998;
+  margin:auto;
+}
+
+.center{
+  align-items: center;
+}
+
+.contentHeader {
+    position: absolute;
+    text-align:center;
+    background-color: #FFE75B;
+    border-radius: 10px 10px 0px 0px;
+    padding: 10px;
+    padding-top:20px;
+    padding-bottom:20px;
+    left: 0;
+    right: 0;
+    color:black;
+    z-index:9999;
+}
+
+.trackName{
+  width:100%;
+}
+
+.songStubs{
+  width:100%;
+  margin-top:10px;
+  margin-bottom:15px;
+}
+
+.oh{
+  transition: .4s ease-out;
+}
+
+.oh:hover{
+  transform:scale(1.05);
+  cursor: pointer;
 }
